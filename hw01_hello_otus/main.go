@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"fmt"
 
 	"golang.org/x/example/stringutil"
 )
@@ -9,5 +9,5 @@ import (
 const hello = "Hello, OTUS!"
 
 func main() {
-	log.Println(stringutil.Reverse(hello))
+	fmt.Println(stringutil.Reverse(hello))
 }
