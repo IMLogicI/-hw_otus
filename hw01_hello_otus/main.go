@@ -1,8 +1,9 @@
 package main
 
 import (
-	"golang.org/x/example/stringutil"
 	"log"
+
+	"golang.org/x/example/stringutil"
 )
 
 const hello = "Hello, OTUS!"
