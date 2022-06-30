@@ -1,6 +1,7 @@
 package hw04lrucache
 
 import (
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -48,4 +49,50 @@ func TestList(t *testing.T) {
 		}
 		require.Equal(t, []int{70, 80, 60, 40, 10, 30, 50}, elems)
 	})
+
+	t.Run("clear list", func(t *testing.T) {
+		l := NewList()
+		l.PushBack(10)
+		l.PushBack(20)
+		l.Clear()
+		require.Equal(t, 0, l.Len())
+	})
+
+	t.Run("move middle elem", func(t *testing.T) {
+		l := NewList()
+		for _, v := range [...]int{1, 2, 3, 4, 5} {
+			l.PushBack(v)
+		}
+
+		l.MoveToFront(l.Front().Next.Next)
+		elems := make([]int, 0, l.Len())
+		for i := l.Front(); i != nil; i = i.Next {
+			elems = append(elems, i.Value.(int))
+		}
+
+		require.Equal(t, []int{3, 1, 2, 4, 5}, elems)
+	})
+
+	t.Run("diff types elems", func(t *testing.T) {
+		l := NewList()
+		l.PushBack(1)
+		l.PushBack("ab")
+		l.PushBack(true)
+		l.PushBack(testStruct{
+			Str: "here",
+			Num: 123,
+		})
+
+		elems := ""
+		for i := l.Front(); i != nil; i = i.Next {
+			elems += fmt.Sprintf("%v ", i.Value)
+		}
+
+		require.Equal(t, "1 ab true {here 123} ", elems)
+	})
+}
+
+type testStruct struct {
+	Str string
+	Num int
 }

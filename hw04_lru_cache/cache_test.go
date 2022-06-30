@@ -55,8 +55,6 @@ func TestCache(t *testing.T) {
 }
 
 func TestCacheMultithreading(t *testing.T) {
-	t.Skip() // Remove me if task with asterisk completed.
-
 	c := NewCache(10)
 	wg := &sync.WaitGroup{}
 	wg.Add(2)
@@ -76,4 +74,39 @@ func TestCacheMultithreading(t *testing.T) {
 	}()
 
 	wg.Wait()
+}
+
+func TestOverload(t *testing.T) {
+	c := NewCache(3)
+	requiredKey := "first"
+	c.Set(Key(requiredKey), 1)
+	c.Set("second", 2)
+	c.Set("third", 3)
+	c.Set("fourth", 4)
+	_, ok := c.Get(Key(requiredKey))
+	require.False(t, ok)
+}
+
+func TestOverloadRemoveOld(t *testing.T) {
+	c := NewCache(3)
+	firstKey := "first"
+	secondKey := "second"
+	thirdKey := "third"
+	fourthKey := "fourth"
+
+	c.Set(Key(firstKey), 1)
+	c.Set(Key(secondKey), 2)
+	c.Set(Key(thirdKey), 3)
+
+	c.Set(Key(firstKey), 4)
+	c.Get(Key(secondKey))
+
+	c.Set(Key(fourthKey), 10)
+
+	_, ok := c.Get(Key(thirdKey))
+	_, ok1 := c.Get(Key(secondKey))
+	_, ok2 := c.Get(Key(firstKey))
+	_, ok3 := c.Get(Key(fourthKey))
+	require.False(t, ok)
+	require.True(t, ok1, ok2, ok3)
 }
