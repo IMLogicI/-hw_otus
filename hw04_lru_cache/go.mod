@@ -1,4 +1,4 @@
-module github.com/IMLogicI/-hw_otus/tree/master/hw04_lru_cache
+module github.com/IMLogicI/-hw_otus/hw04_lru_cache
 
 go 1.16
 
