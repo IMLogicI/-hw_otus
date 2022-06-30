@@ -7,9 +7,10 @@ import (
 )
 
 // Change to true if needed.
-var taskWithAsteriskIsCompleted = false
+var taskWithAsteriskIsCompleted = true
 
-var text = `Как видите, он  спускается  по  лестнице  вслед  за  своим
+var (
+	text = `Как видите, он  спускается  по  лестнице  вслед  за  своим
 	другом   Кристофером   Робином,   головой   вниз,  пересчитывая
 	ступеньки собственным затылком:  бум-бум-бум.  Другого  способа
 	сходить  с  лестницы  он  пока  не  знает.  Иногда ему, правда,
@@ -42,6 +43,9 @@ var text = `Как видите, он  спускается  по  лестни�
 	иногда,  особенно  когда  папа  дома,  он больше любит тихонько
 	посидеть у огня и послушать какую-нибудь интересную сказку.
 		В этот вечер...`
+
+	numberText = `12 321, 32 12 1 1 1 4 2 3fd 1 32. 1 dwq1 34 dfe dfe 65`
+)
 
 func TestTop10(t *testing.T) {
 	t.Run("no words in empty string", func(t *testing.T) {
@@ -78,5 +82,62 @@ func TestTop10(t *testing.T) {
 			}
 			require.Equal(t, expected, Top10(text))
 		}
+	})
+}
+
+func TestNums(t *testing.T) {
+	t.Run("nums are words two", func(t *testing.T) {
+		expected := []string{
+			"1",
+			"12",
+			"32",
+			"dfe",
+			"2",
+			"321",
+			"34",
+			"3fd",
+			"4",
+			"65",
+		}
+		require.Equal(t, expected, Top10(numberText))
+	})
+}
+
+func TestShortString(t *testing.T) {
+	t.Run("what if there is no 10 words", func(t *testing.T) {
+		expected := []string{
+			"привет",
+			"еще",
+			"и",
+			"раз",
+		}
+		require.Equal(t, expected, Top10("Привет, и еще раз привет."))
+	})
+}
+
+func TestDashOnEndOrBeginning(t *testing.T) {
+	t.Run("what if the word starts or ends with dash", func(t *testing.T) {
+		expected := []string{
+			"-тире",
+			"в",
+			"какое-то",
+			"начале",
+			"неправильное",
+			"слова",
+			"тире-",
+			"это",
+		}
+		require.Equal(t, expected, Top10("-Тире в начале слова - это какое-то неправильное тире-."))
+	})
+}
+
+func TestDoubleDash(t *testing.T) {
+	t.Run("what if the word starts or ends with dash", func(t *testing.T) {
+		expected := []string{
+			"---",
+			"--",
+			"----",
+		}
+		require.Equal(t, expected, Top10("--. - ---- --- ---,-"))
 	})
 }
