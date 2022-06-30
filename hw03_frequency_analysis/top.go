@@ -6,6 +6,8 @@ import (
 	"strings"
 )
 
+var re = regexp.MustCompile(`[^\wа-яА-Я-]`)
+
 type wordsCount struct {
 	Word  string
 	Count int64
@@ -19,7 +21,6 @@ func Top10(str string) []string {
 }
 
 func splitString(str string) []string {
-	re := regexp.MustCompile(`[^\wа-яА-Я-]`)
 	strWithoutSymbols := re.ReplaceAllString(str, " ")
 	words := strings.Fields(strWithoutSymbols)
 	return words

@@ -1,4 +1,4 @@
-module github.com/IMLogicI/-hw_otus/tree/master/hw03_frequency_analysis
+module github.com/IMLogicI/-hw_otus/hw03_frequency_analysis
 
 go 1.16
 
