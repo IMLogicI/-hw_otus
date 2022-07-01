@@ -1,4 +1,4 @@
-module github.com/IMLogicI/-hw_otus/tree/master/hw01_hello_otus
+module github.com/IMLogicI/-hw_otus/hw01_hello_otus
 
 go 1.16
 
